@@ -105,10 +105,10 @@ protected:
 #pragma endregion Input Methods
 
 #pragma region Speed variables
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Speed, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Speed, meta = (AllowPrivateAccess = "true"))
 	float NormalSpeed;
 	
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Speed, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Speed, meta = (AllowPrivateAccess = "true"))
 	float SprintSpeed;
 #pragma endregion Speed variables
 

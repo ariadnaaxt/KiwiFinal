@@ -280,7 +280,7 @@ void AFeatherCharacter::ChangeToSideScroller(FVector3d NewLocation, FRotator New
 	//FVector RightVector = FRotationMatrix(NewRotation).GetUnitAxis(EAxis::Y);
 	//GetCharacterMovement()->SetPlaneConstraintNormal(RightVector);
 	//GetCharacterMovement()->bConstrainToPlane = true;
-	GetCharacterMovement()->MaxWalkSpeed = SprintSpeed;
+	//GetCharacterMovement()->MaxWalkSpeed = SprintSpeed;
 	//SetActorLocation(NewLocation);
 	Controller->SetControlRotation(NewRotation);
 	SideScrollerDirection = NewRotation.Vector();
