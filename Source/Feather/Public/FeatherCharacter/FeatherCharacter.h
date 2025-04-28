@@ -81,6 +81,9 @@ public:
 
 	UFUNCTION()
 	class AInteractableActor* GetCurrentInteractableActor() const;
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "Custom")
+	void OnInteractionPressed();
 	
 protected:
 

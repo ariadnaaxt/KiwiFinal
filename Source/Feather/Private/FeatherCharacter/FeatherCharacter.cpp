@@ -207,6 +207,9 @@ void AFeatherCharacter::Interact()
 	const AInteractableActor* ClosestActor = nullptr;
 	float MinDistance = TNumericLimits<float>::Max();
 	
+	// On button pressed
+	OnInteractionPressed();
+
 	for (AActor* Actor : OverlappingActors)
 	{
 		if (const AInteractableActor* InteractableActor = Cast<AInteractableActor>(Actor))
