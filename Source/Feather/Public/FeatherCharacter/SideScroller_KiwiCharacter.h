@@ -69,6 +69,12 @@ class ASideScroller_KiwiCharacter: public ACharacter
 public:
 	ASideScroller_KiwiCharacter();
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Custom")
+	bool bChangeCameraPosition;
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "Custom")
+	void AddMovementEvent(const FInputActionValue& value);
+
 protected:
 
 #pragma region Input Methods
@@ -86,10 +92,10 @@ protected:
 #pragma endregion Input Methods
 
 #pragma region Speed variables
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Speed, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Speed, meta = (AllowPrivateAccess = "true"))
 	float NormalSpeed;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Speed, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Speed, meta = (AllowPrivateAccess = "true"))
 	float SprintSpeed;
 #pragma endregion Speed variables
 

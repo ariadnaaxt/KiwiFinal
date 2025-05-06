@@ -114,24 +114,12 @@ void ASideScroller_KiwiCharacter::SetupSideScrollerInput(UInputComponent* Player
 
 void ASideScroller_KiwiCharacter::MoveSideScroller(const FInputActionValue& Value)
 {
-	// Obtén la rotación del Controller (que controla la cámara)
-	FRotator ControlRotation = GetControlRotation();
-
-	// Queremos ignorar el "Pitch" para mantener el movimiento en un plano horizontal
-	ControlRotation.Pitch = 0.0f;
-
-	// Obtener el vector hacia adelante (Forward) en relación a la cámara
-	FVector ForwardVector = FRotationMatrix(ControlRotation).GetUnitAxis(EAxis::X);
-
-	// Obtener el vector a la derecha (Right) en relación a la cámara
-	FVector RightVector = FRotationMatrix(ControlRotation).GetUnitAxis(EAxis::Y);
-
-	// Obtener el input de movimiento (X para adelante/atrás, Y para izquierda/derecha)
-	FVector2D MovementVector = Value.Get<FVector2D>();
-
-	// Aplicar movimiento hacia adelante/atrás y izquierda/derecha en base a los vectores calculados
-	AddMovementInput(ForwardVector, MovementVector.X);  // Movimiento adelante/atrás
-	AddMovementInput(RightVector, MovementVector.Y);    // Movimiento izquierda/derecha
+	if (Controller == nullptr)
+	{
+		return;
+	}
+	
+	AddMovementEvent(Value);
 }
 
 
