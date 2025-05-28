@@ -4,11 +4,12 @@
 #include "Components/TextBlock.h"
 #include "Components/WidgetSwitcher.h"
 
-void UCustomizableTextBox::InitializeWidget(const FText& Text, const float CustomTypingSpeed)
+void UCustomizableTextBox::InitializeWidget(ECharacterType CharacterType, const FText& Text, const float CustomTypingSpeed)
 {
 	ContentText = Text;
 	CurrentCharIndex = 0;
 	TypingSpeed = CustomTypingSpeed;
+	UpdateCharacterImage(CharacterType);
 	StartTypewritingAnimation();
 }
 
@@ -62,6 +63,36 @@ void UCustomizableTextBox::StartTypewritingAnimation()
 	else
 	{
 		UE_LOG(LogTemp, Error, TEXT("UCustomizableTextBox::StartTypewritingAnimation - ContentTextBlock is null. Unable to start the typewriting animation to show the text."));
+	}
+}
+
+void UCustomizableTextBox::UpdateCharacterImage(ECharacterType CharacterType)
+{
+	if (CharacterImagesSwitcher != nullptr)
+	{
+		TObjectPtr<UImage> NewCharacterImage = nullptr;
+
+		switch (CharacterType)
+		{
+		case ECharacterType::BUNNY:
+			NewCharacterImage = BunnyImage;
+			break;
+		case ECharacterType::KIWI:
+			NewCharacterImage = KiwiImage;
+			break;
+		case ECharacterType::SQUIRREL:
+			NewCharacterImage = SquirrelImage;
+			break;
+		default:
+			NewCharacterImage = BunnyImage;
+			UE_LOG(LogTemp, Warning, TEXT("UCustomizableTextBox::UpdateCharacterImage - Invalid CharacterType. Defaulting to the bunny image."));
+			break;
+		}
+		CharacterImagesSwitcher->SetActiveWidget(NewCharacterImage);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("UCustomizableTextBox::UpdateCharacterImage - CharacterImagesSwitcher is null. Unable to change the character image."));
 	}
 }
 
