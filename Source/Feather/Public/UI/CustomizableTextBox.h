@@ -10,11 +10,26 @@ class UTextBlock;
 class UWidgetSwitcher;
 
 UENUM(BlueprintType)
-enum ECharacterType : uint8
+enum class ECharacterType : uint8
 {
 	BUNNY,
 	KIWI,
 	SQUIRREL
+};
+
+USTRUCT(BlueprintType)
+struct FDialogConfig
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditDefaultsOnly)
+	ECharacterType CharacterType = ECharacterType::KIWI;
+	
+	UPROPERTY(EditDefaultsOnly)
+	FText Text = FText::FromString("");
+	
+	UPROPERTY(EditDefaultsOnly)
+	float CustomTypingSpeed = 0.03;
 };
 
 UCLASS()
@@ -24,12 +39,16 @@ class FEATHER_API UCustomizableTextBox : public UUserWidget
 
 public:
 	UFUNCTION(BlueprintCallable)
-	void InitializeWidget(ECharacterType CharacterType, const FText& Text, const float CustomTypingSpeed = 0.03f);
+	void ClickAction();
+	UFUNCTION(BlueprintCallable)
+	void StartDialog(const TArray<FDialogConfig>& DialogConfig);
 	
 private:
 	FString InsertLineBreaks(const FString& InputString, int32 InputLength = 60);
 	void TypeNextCharacter();
 	void ChangePlayImageState(const bool IsEnable);
+	void CompleteTextInstantly();
+	void ShowCurrentDialog();
 	void StartTypewritingAnimation();
 	void UpdateCharacterImage(ECharacterType CharacterType);
 	
@@ -55,4 +74,9 @@ private:
 	FTimerHandle TypingTimerHandle;
 	int32 CurrentCharIndex;
 	float TypingSpeed;
+	int32 CurrentDialogIndex;
+	bool bIsWaitingForNextDialog;
+	
+	UPROPERTY()
+	TArray<FDialogConfig> Dialogs;
 };

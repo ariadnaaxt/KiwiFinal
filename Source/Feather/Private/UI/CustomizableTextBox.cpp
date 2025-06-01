@@ -4,13 +4,28 @@
 #include "Components/TextBlock.h"
 #include "Components/WidgetSwitcher.h"
 
-void UCustomizableTextBox::InitializeWidget(ECharacterType CharacterType, const FText& Text, const float CustomTypingSpeed)
+void UCustomizableTextBox::StartDialog(const TArray<FDialogConfig>& DialogConfig)
 {
-	ContentText = Text;
-	CurrentCharIndex = 0;
-	TypingSpeed = CustomTypingSpeed;
-	UpdateCharacterImage(CharacterType);
-	StartTypewritingAnimation();
+	if (DialogConfig.Num() != 00)
+	{
+		bIsWaitingForNextDialog = false;
+		Dialogs = DialogConfig;
+		CurrentDialogIndex = 0;
+		ShowCurrentDialog();
+	}
+}
+
+void UCustomizableTextBox::ClickAction()
+{
+	if (GetWorld()->GetTimerManager().IsTimerActive(TypingTimerHandle))
+	{
+		CompleteTextInstantly();
+	}
+	else if (bIsWaitingForNextDialog)
+	{
+		CurrentDialogIndex++;
+		ShowCurrentDialog();
+	}
 }
 
 void UCustomizableTextBox::TypeNextCharacter()
@@ -19,6 +34,7 @@ void UCustomizableTextBox::TypeNextCharacter()
 	{
 		GetWorld()->GetTimerManager().ClearTimer(TypingTimerHandle);
 		ChangePlayImageState(false);
+		bIsWaitingForNextDialog = true;
 		return;
 	}
 
@@ -31,7 +47,7 @@ void UCustomizableTextBox::TypeNextCharacter()
 	}
 	else
 	{
-		UE_LOG(LogTemp, Error, TEXT("UCustomizableTextBox::TypeNextCharacter - ContentTextBlock is null. Unable to process the text to be displayed into the text block."));
+		UE_LOG(LogTemp, Error, TEXT("UCustomizableTextBox::TypeNextCharacter - ContentTextBlock is null."));
 	}
 }
 
@@ -45,6 +61,35 @@ void UCustomizableTextBox::ChangePlayImageState(const bool IsEnable)
 	else
 	{
 		UE_LOG(LogTemp, Error, TEXT("UCustomizableTextBox::ChangePlayImageState - AnimationPlayingSwitcher is null. Unable to change the animation playing image to a new state."));
+	}
+}
+
+void UCustomizableTextBox::CompleteTextInstantly()
+{
+	GetWorld()->GetTimerManager().ClearTimer(TypingTimerHandle);
+	ChangePlayImageState(false);
+
+	if (ContentTextBlock)
+	{
+		const FString FormattedText = InsertLineBreaks(ContentText.ToString(), 60);
+		ContentTextBlock->SetText(FText::FromString(FormattedText));
+	}
+
+	bIsWaitingForNextDialog = true;
+}
+
+void UCustomizableTextBox::ShowCurrentDialog()
+{
+	if (Dialogs.IsValidIndex(CurrentDialogIndex) == true)
+	{
+		bIsWaitingForNextDialog = false;
+
+		const FDialogConfig& CurrentDialog = Dialogs[CurrentDialogIndex];
+		CurrentCharIndex = 0;
+		ContentText = CurrentDialog.Text;
+		TypingSpeed = CurrentDialog.CustomTypingSpeed;
+		UpdateCharacterImage(CurrentDialog.CharacterType);
+		StartTypewritingAnimation();
 	}
 }
 
