@@ -32,6 +32,8 @@ struct FDialogConfig
 	float CustomTypingSpeed = 0.03;
 };
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnFinishedDialogDelegate);
+
 UCLASS()
 class FEATHER_API UCustomizableTextBox : public UUserWidget
 {
@@ -42,6 +44,9 @@ public:
 	void ClickAction();
 	UFUNCTION(BlueprintCallable)
 	void StartDialog(const TArray<FDialogConfig>& DialogConfig);
+
+	UPROPERTY(BlueprintAssignable, BlueprintCallable)
+	FOnFinishedDialogDelegate OnFinishedDialogDelegate;
 	
 private:
 	FString InsertLineBreaks(const FString& InputString, int32 InputLength = 60);

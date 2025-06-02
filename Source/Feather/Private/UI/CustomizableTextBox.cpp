@@ -91,6 +91,10 @@ void UCustomizableTextBox::ShowCurrentDialog()
 		UpdateCharacterImage(CurrentDialog.CharacterType);
 		StartTypewritingAnimation();
 	}
+	else
+	{
+		OnFinishedDialogDelegate.Broadcast();
+	}
 }
 
 void UCustomizableTextBox::StartTypewritingAnimation()
