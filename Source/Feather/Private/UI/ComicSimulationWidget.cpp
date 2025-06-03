@@ -16,10 +16,13 @@ void UComicSimulationWidget::StartComicSimulation(const TArray<UTexture2D*>& InT
 
 void UComicSimulationWidget::ClickAction()
 {
-	if (bIsTransitioning || !ComicTextures.IsValidIndex(CurrentIndex + 1))
+	if (bIsTransitioning || ComicTextures.Num() == 0)
+	{
 		return;
+	}
 
 	bIsTransitioning = true;
+
 	PlayFadeOutAnimation();
 
 	FTimerHandle TimerHandle;
@@ -41,6 +44,7 @@ void UComicSimulationWidget::OnFadeOutFinished()
 	else
 	{
 		bIsTransitioning = false;
+		OnComicSimulationFinished.Broadcast();
 	}
 }
 

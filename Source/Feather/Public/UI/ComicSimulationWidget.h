@@ -9,6 +9,8 @@ class UTexture2D;
 class UAnimationAsset;
 class UImage;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnComicSimulationFinished);
+
 UCLASS()
 class FEATHER_API UComicSimulationWidget : public UUserWidget
 {
@@ -26,7 +28,9 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void PlayFadeInAnimation();
-	
+
+	UPROPERTY(BlueprintAssignable, BlueprintCallable)
+	FOnComicSimulationFinished OnComicSimulationFinished;
 private:
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UImage> Image;
