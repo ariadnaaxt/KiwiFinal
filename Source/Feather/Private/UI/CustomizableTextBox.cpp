@@ -4,7 +4,7 @@
 #include "Components/TextBlock.h"
 #include "Components/WidgetSwitcher.h"
 
-void UCustomizableTextBox::StartDialog(const TArray<FDialogConfig>& DialogConfig)
+void UCustomizableTextBox::StartDialog(const TArray<FDialogConfiguration>& DialogConfig)
 {
 	if (DialogConfig.Num() != 00)
 	{
@@ -84,7 +84,7 @@ void UCustomizableTextBox::ShowCurrentDialog()
 	{
 		bIsWaitingForNextDialog = false;
 
-		const FDialogConfig& CurrentDialog = Dialogs[CurrentDialogIndex];
+		const FDialogConfiguration CurrentDialog = Dialogs[CurrentDialogIndex];
 		CurrentCharIndex = 0;
 		ContentText = CurrentDialog.Text;
 		TypingSpeed = CurrentDialog.CustomTypingSpeed;
@@ -131,6 +131,9 @@ void UCustomizableTextBox::UpdateCharacterImage(ECharacterType CharacterType)
 			break;
 		case ECharacterType::SQUIRREL:
 			NewCharacterImage = SquirrelImage;
+			break;
+		case ECharacterType::CROW:
+			NewCharacterImage = CrowImage;
 			break;
 		default:
 			NewCharacterImage = BunnyImage;

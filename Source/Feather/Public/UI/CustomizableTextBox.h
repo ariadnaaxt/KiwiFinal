@@ -2,35 +2,14 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "ECharacterType.h"
+#include "FDialogConfiguration.h"
 #include "CustomizableTextBox.generated.h"
 
 // Forward declarations
 class UImage;
 class UTextBlock;
 class UWidgetSwitcher;
-
-UENUM(BlueprintType)
-enum class ECharacterType : uint8
-{
-	BUNNY,
-	KIWI,
-	SQUIRREL
-};
-
-USTRUCT(BlueprintType)
-struct FDialogConfig
-{
-	GENERATED_BODY()
-
-	UPROPERTY(EditDefaultsOnly)
-	ECharacterType CharacterType = ECharacterType::KIWI;
-	
-	UPROPERTY(EditDefaultsOnly)
-	FText Text = FText::FromString("");
-	
-	UPROPERTY(EditDefaultsOnly)
-	float CustomTypingSpeed = 0.03;
-};
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnFinishedDialogDelegate);
 
@@ -43,7 +22,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void ClickAction();
 	UFUNCTION(BlueprintCallable)
-	void StartDialog(const TArray<FDialogConfig>& DialogConfig);
+	void StartDialog(const TArray<FDialogConfiguration>& DialogConfig);
 
 	UPROPERTY(BlueprintAssignable, BlueprintCallable)
 	FOnFinishedDialogDelegate OnFinishedDialogDelegate;
@@ -73,6 +52,8 @@ private:
 	TObjectPtr<UImage> KiwiImage;
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UImage> SquirrelImage;
+	UPROPERTY(meta = (BindWidget))
+	TObjectPtr<UImage> CrowImage;
 	
 	UPROPERTY(EditDefaultsOnly)
 	FText ContentText;
@@ -83,5 +64,5 @@ private:
 	bool bIsWaitingForNextDialog;
 	
 	UPROPERTY()
-	TArray<FDialogConfig> Dialogs;
+	TArray<FDialogConfiguration> Dialogs;
 };
