@@ -36,6 +36,7 @@ protected:
 	class UInputAction* PauseAction;
 
 public:
+	UPROPERTY(BlueprintAssignable, BlueprintCallable)
 	FOnPauseStateChangeDelegate OnPauseStateChange;
 	
 };

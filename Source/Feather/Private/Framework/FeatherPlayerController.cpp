@@ -51,7 +51,8 @@ void AFeatherPlayerController::SetupInputComponent()
 
 void AFeatherPlayerController::ChangePauseState()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Pause"));
-	SetPause(!IsPaused());
+	const bool NewPauseState = !IsPaused();
+	SetShowMouseCursor(NewPauseState);
+	SetPause(NewPauseState);
 	OnPauseStateChange.Broadcast(IsPaused());
 }
