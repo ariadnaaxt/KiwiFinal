@@ -2,13 +2,14 @@
 #include "Components/Image.h"
 #include "TimerManager.h"
 
-void UComicSimulationWidget::StartComicSimulation(const TArray<UTexture2D*>& InTextures)
+void UComicSimulationWidget::StartComicSimulation(const TArray<UTexture2D*>& InTextures, const FOnLastComicShown& InOnFinishedCallback)
 {
 	if (InTextures.Num() == 0 || !Image) return;
 
 	ComicTextures = InTextures;
 	CurrentIndex = 0;
 	bIsTransitioning = false;
+	OnFinishedCallback = InOnFinishedCallback;
 
 	SetImageTexture(ComicTextures[CurrentIndex]);
 	PlayFadeInAnimation();
@@ -44,7 +45,8 @@ void UComicSimulationWidget::OnFadeOutFinished()
 	else
 	{
 		bIsTransitioning = false;
-		OnComicSimulationFinished.Broadcast();
+		
+		OnFinishedCallback.ExecuteIfBound();
 	}
 }
 

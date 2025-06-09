@@ -67,6 +67,7 @@ AFeatherCharacter::AFeatherCharacter()
 void AFeatherCharacter::AddStone(AStoneInteractableActor* NewStone)
 {
 	CurrentInteractableActor = NewStone;
+	NewStone->SetActorEnableCollision(false);
 	NewStone->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, "PickSocket");
 }
 
@@ -78,6 +79,7 @@ bool AFeatherCharacter::CanGrabInteractable() const
 void AFeatherCharacter::PutStoneInCollector(AStoneCollectorInteractableActor* Collector)
 {
 	CurrentInteractableActor->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+	CurrentInteractableActor->SetActorEnableCollision(true);
 	AStoneInteractableActor* StoneActor = Cast<AStoneInteractableActor>(CurrentInteractableActor);
 	Collector->OnStoneCollected(StoneActor);
 	CurrentInteractableActor = nullptr;
@@ -236,6 +238,7 @@ void AFeatherCharacter::Interact()
 		{
 			//Detach the stone from the player
 			CurrentInteractableActor->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+			CurrentInteractableActor->SetActorEnableCollision(true);
 			CurrentInteractableActor->OnReleased();
 			CurrentInteractableActor = nullptr;
 		}

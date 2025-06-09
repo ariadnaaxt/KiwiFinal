@@ -9,7 +9,7 @@ class UTexture2D;
 class UAnimationAsset;
 class UImage;
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnComicSimulationFinished);
+DECLARE_DYNAMIC_DELEGATE(FOnLastComicShown);
 
 UCLASS()
 class FEATHER_API UComicSimulationWidget : public UUserWidget
@@ -18,7 +18,7 @@ class FEATHER_API UComicSimulationWidget : public UUserWidget
 
 public:
 	UFUNCTION(BlueprintCallable)
-	void StartComicSimulation(const TArray<UTexture2D*>& InTextures);
+	void StartComicSimulation(const TArray<UTexture2D*>& InTextures, const FOnLastComicShown& InOnFinishedCallback);
 
 	UFUNCTION(BlueprintCallable)
 	void ClickAction();
@@ -29,9 +29,9 @@ public:
 	UFUNCTION(BlueprintImplementableEvent)
 	void PlayFadeInAnimation();
 
-	UPROPERTY(BlueprintAssignable, BlueprintCallable)
-	FOnComicSimulationFinished OnComicSimulationFinished;
 private:
+	FOnLastComicShown OnFinishedCallback;
+	
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UImage> Image;
 
